@@ -1,1 +1,1 @@
-# PI_labs
+Tasks for imperative programming course at AGH
