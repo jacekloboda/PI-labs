@@ -97,7 +97,7 @@ int is_legal(int board[10][10], int move[4], int player) //move array: {starting
 
         if(board[midx][midy] != player)
         {
-            board[midx][midy] = 0; //capturing a pice, why in is_legal function? idk
+            board[midx][midy] = 0; //capturing a pice, why in is legal function? idk
         }
     }
 
