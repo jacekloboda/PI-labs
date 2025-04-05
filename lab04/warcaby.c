@@ -1,3 +1,4 @@
+#include <complex.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -86,11 +87,18 @@ int is_legal(int board[10][10], int move[4], int player) //move array: {starting
     if(disx>2){printf("6\n"); return 0;}//player can perform only one capture per move so moving not farther than 2 tiles
                                                                                                                                 
     if(disx>1)//capturing or jumping over your piece
-    {                                                                                    
+    {
         int midx = (move[0]+move[2])/2;
         int midy = (move[1]+move[3])/2;
 
         if(board[midx][midy]==0){return 0;}//cant jump over empty tile
+        
+        //now it its possible to jump and move must be legall
+
+        if(board[midx][midy] != player)
+        {
+            board[midx][midy] = 0; //capturing a pice, why in is_legal function? idk
+        }
     }
 
     return 1;
@@ -102,13 +110,16 @@ void action(int board[10][10], int *player)
     printf("Player %c enter move: ", (*player==1)?'O':'0');
     fflush(stdin);
     scanf("%c %c %c %c",&move_ch[0],&move_ch[1],&move_ch[2],&move_ch[3]);
+    while(getchar() != '\n');//clearing bufor
+
     printf("\n");
 
+
     int move[4];
-    move[0] = move_ch[0]-49;
-    move[1] = move_ch[1]-65;
-    move[2] = move_ch[2]-49;
-    move[3] = move_ch[3]-65;
+    move[0] = move_ch[0]-'1';
+    move[1] = move_ch[1]-'A';
+    move[2] = move_ch[2]-'1';
+    move[3] = move_ch[3]-'A';
     printf("%d, %d, %d, %d\n",move[0], move[1], move[2], move[3]);
                 
     if(!is_legal(board, move, *player))
@@ -117,9 +128,12 @@ void action(int board[10][10], int *player)
         return;
     }
 
+    //when move is legal
+
     board[move[0]][move[1]]=0;
     board[move[2]][move[3]]=*player;
-    *player*=(-1);
+ 
+    *player = (*player == 1) ? -1 : 1;//changing player before next turn
 
     return;
 }
@@ -133,6 +147,7 @@ int main(void)
     int player=1;
     while(1)
     {
+        
         print_board(tab);
         action(tab,&player);
     }
